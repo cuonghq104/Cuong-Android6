@@ -14,8 +14,6 @@ public class Plane {
     public static final int PLANE_WIDTH = 60;
     public static final int PLANE_HEIGHT = 35;
 
-//    public static final double RATIO_BULLET_POSITION_ONPLANE = 5/12;
-
     private int x;
 
     private int y;
@@ -24,42 +22,21 @@ public class Plane {
 
     private ArrayList<Bullet> bullet;
 
+    private int attackSpeed;
+
     public ArrayList<Bullet> getBullet() {
         return bullet;
     }
 
-    private int numberOfBullet;
+    private long lastAttack;
 
     public Plane(int x, int y, Image image) {
         bullet = new ArrayList<Bullet>();
+        lastAttack = System.currentTimeMillis();
         this.x = x;
         this.y = y;
         this.image = image;
-        numberOfBullet = 1;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public Image getImage() {
-        return image;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
+        attackSpeed = 300;
     }
 
     public void keyPressed(KeyEvent e) {
@@ -83,7 +60,10 @@ public class Plane {
             case KeyEvent.VK_SPACE:
                 System.out.println("FIRE SPACE");
                 try {
-
+                    long thisAttack = System.currentTimeMillis();
+                    if (thisAttack - lastAttack < attackSpeed)
+                        break;
+                    lastAttack = thisAttack;
                     bullet.add(new Bullet(x + ((PLANE_WIDTH - Bullet.getBULLET_WIDTH()) / 2), y,
                             ImageIO.read(new File("resources/bullet.png"))));
                 } catch (IOException e1) {

@@ -8,7 +8,8 @@ public class Bullet {
 
     private int y;
 
-    public static final int SPEED = 5;
+    public static final int SPEED_PLAYER_PLANE = 15;
+    public static final int SPEED_ENEMY_PLANE = 2;
 
     public static final int BULLET_WIDTH = 10;
     public static final int BULLET_HEIGHT = 30;
@@ -25,11 +26,14 @@ public class Bullet {
     }
 
     public void move() {
-            y -= SPEED;
+            y -= SPEED_PLAYER_PLANE;
     }
 
     public void drawImage(Graphics g) {
         g.drawImage(image, x, y, BULLET_WIDTH, BULLET_HEIGHT, null);
-        move();
+    }
+
+    public void move_enemy() {
+        y += SPEED_ENEMY_PLANE;
     }
 }

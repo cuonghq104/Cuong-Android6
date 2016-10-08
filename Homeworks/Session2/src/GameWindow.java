@@ -4,6 +4,8 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Cuong on 10/2/2016.
@@ -17,8 +19,6 @@ public class GameWindow extends Frame implements Runnable{
     Plane plane;
     Plane plane2;
 
-    private int numberOfBullets = 1;
-
     Bullet bullet;
     Bullet bullet2;
 
@@ -31,7 +31,12 @@ public class GameWindow extends Frame implements Runnable{
     private static final int PLANE2_X = 360;
     private static final int PLANE2_Y = 315;
 
-    private static final int MOVE = 20;
+    private static final int ENEMY_APPERENCE_FREQ = 2000;
+
+    private long enemy_lastApperance;
+
+
+    ArrayList<Enemy> enemy;
 
     public GameWindow() {
 
@@ -157,7 +162,10 @@ public class GameWindow extends Frame implements Runnable{
             e.printStackTrace();
         }
 
-        repaint();
+        enemy = new ArrayList<Enemy>();
+
+        enemy_lastApperance = System.currentTimeMillis();
+
     }
 
     @Override
@@ -174,11 +182,23 @@ public class GameWindow extends Frame implements Runnable{
         backBufferGraphics.drawImage(backgroundImage, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, null);
         plane.drawImage(backBufferGraphics);
         plane2.drawImage(backBufferGraphics);
+
+        for (int i = 0; i < enemy.size(); i++) {
+            enemy.get(i).drawImage(backBufferGraphics);
+        }
+
         for (int i = 0; i < plane.getBullet().size(); i++) {
             plane.getBullet().get(i).drawImage(backBufferGraphics);
         }
+
         for (int i = 0; i < plane2.getBullet().size(); i++) {
             plane2.getBullet().get(i).drawImage(backBufferGraphics);
+        }
+
+        for (int i = 0; i < enemy.size(); i++) {
+            for (int j = 0; j < enemy.get(i).getBullet().size(); j++) {
+                enemy.get(i).getBullet().get(j).drawImage(backBufferGraphics);
+            }
         }
 
         g.drawImage(backBufferImage, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, null);
@@ -189,18 +209,40 @@ public class GameWindow extends Frame implements Runnable{
         while (true) {
             try {
                 Thread.sleep(17);
-                if (plane.getBullet().size() != 0) {
-                    for (int i = 0; i < plane.getBullet().size(); i++) {
-                        plane.getBullet().get(i).move();
+
+                for (int i = 0; i < plane.getBullet().size(); i++) {
+                    plane.getBullet().get(i).move();
+                }
+                for (int i = 0; i < plane2.getBullet().size(); i++) {
+                    plane2.getBullet().get(i).move();
+                }
+
+                long now = System.currentTimeMillis();
+                if (now - enemy_lastApperance >= ENEMY_APPERENCE_FREQ) {
+                    Random r = new Random();
+                    int x = r.nextInt(BACKGROUND_WIDTH - Enemy.getENEMY_WIDTH());
+                    enemy.add(new Enemy(x, 0, ImageIO.read(new File("resources/enemy_plane_white_2.png"))));
+                    enemy_lastApperance = now;
+                }
+
+                for (int i = 0; i < enemy.size(); i++) {
+                    enemy.get(i).move();
+                }
+
+                for (int i = 0; i < enemy.size(); i++) {
+                    enemy.get(i).fire();
+                }
+//
+                for (int i = 0; i < enemy.size(); i++) {
+                    for (int j = 0; j < enemy.get(i).getBullet().size(); j++) {
+                        enemy.get(i).getBullet().get(j).move_enemy();
                     }
                 }
-                if (plane2.getBullet().size() != 0) {
-                    for (int i = 0; i < plane2.getBullet().size(); i++) {
-                        plane2.getBullet().get(i).move();
-                    }
-                }
+
                 repaint();
             } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
