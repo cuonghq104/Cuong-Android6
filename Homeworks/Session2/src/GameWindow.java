@@ -1,3 +1,11 @@
+import controllers.EnemyController;
+import controllers.PlaneController;
+import models.Enemy;
+import models.Plane;
+import utils.Utils;
+import views.EnemyView;
+import views.PlaneView;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.*;
@@ -6,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Vector;
 
 /**
  * Created by Cuong on 10/2/2016.
@@ -16,47 +25,42 @@ public class GameWindow extends Frame implements Runnable{
 
     Image backgroundImage = null;
 
-    Plane plane;
-    Plane plane2;
+    private PlaneController planeController;
+    private PlaneController planeControllerMouse;
 
-    Bullet bullet;
-    Bullet bullet2;
+    Vector<EnemyController> vector;
 
     private static final int BACKGROUND_WIDTH = 600;
     private static final int BACKGROUND_HEIGHT = 350;
 
-    private static final int PLANE1_X = 300;
-    private static final int PLANE1_Y = 200;
-
-    private static final int PLANE2_X = 360;
-    private static final int PLANE2_Y = 315;
-
-    private static final int ENEMY_APPERENCE_FREQ = 2000;
+    private static final int ENEMY_APPERENCE_FREQ = 100;
+    private static final int MILLIS_PER_FRAME = 17;
 
     private long enemy_lastApperance;
 
 
-    ArrayList<Enemy> enemy;
+    private Random r;
+
 
     public GameWindow() {
 
+        planeController = new PlaneController(
+                new Plane(BACKGROUND_WIDTH / 2, BACKGROUND_HEIGHT - 100),
+                new PlaneView(Utils.loadImageFromRes("plane3.png"))
+        );
+
+        planeControllerMouse = new PlaneController(
+                new Plane(BACKGROUND_WIDTH / 2, BACKGROUND_HEIGHT - 200),
+                new PlaneView(Utils.loadImageFromRes("plane4.png"))
+        );
+
+        vector = new Vector<>();
 
         backBufferImage = new BufferedImage(BACKGROUND_WIDTH, BACKGROUND_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
-        try {
+        r = new Random();
 
-            bullet = new Bullet(0, 0, ImageIO.read(new File("resources/bullet.png")));
-
-            bullet2 = new Bullet(0, 0, ImageIO.read(new File("resources/bullet.png")));
-
-            plane = new Plane(PLANE1_X, PLANE1_Y,
-                    ImageIO.read(new File("resources/plane3.png")));
-            plane2 = new Plane(PLANE2_X, PLANE2_Y,
-                    ImageIO.read(new File("resources/plane4.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        enemy_lastApperance = ENEMY_APPERENCE_FREQ;
 
         this.setVisible(true);
         this.setSize(BACKGROUND_WIDTH,BACKGROUND_HEIGHT);
@@ -102,7 +106,7 @@ public class GameWindow extends Frame implements Runnable{
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                plane2.fire_LEFTCLICK(e);
+                planeControllerMouse.fire(e);
             }
 
             @Override
@@ -125,15 +129,16 @@ public class GameWindow extends Frame implements Runnable{
 
             }
         });
+
         this.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
-
+                planeControllerMouse.mouseDragged(e);
             }
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                plane2.mouseMoved(e);
+                planeControllerMouse.mouseMoved(e);
             }
         });
 
@@ -146,12 +151,16 @@ public class GameWindow extends Frame implements Runnable{
             @Override
             public void keyPressed(KeyEvent e) {
                 System.out.println("keyPressed");
-                plane.keyPressed(e);
+                planeController.keyPressed(e);
+                if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    planeController.fire(e);
+                }
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
                 System.out.println("keyReleased");
+                planeController.keyReleased(e);
             }
         });
 
@@ -162,17 +171,15 @@ public class GameWindow extends Frame implements Runnable{
             e.printStackTrace();
         }
 
-        enemy = new ArrayList<Enemy>();
-
         enemy_lastApperance = System.currentTimeMillis();
 
     }
+
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
     }
-
 
     @Override
     public void update(Graphics g) {
@@ -180,25 +187,10 @@ public class GameWindow extends Frame implements Runnable{
         Graphics backBufferGraphics = backBufferImage.getGraphics();
 
         backBufferGraphics.drawImage(backgroundImage, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, null);
-        plane.drawImage(backBufferGraphics);
-        plane2.drawImage(backBufferGraphics);
-
-        for (int i = 0; i < enemy.size(); i++) {
-            enemy.get(i).drawImage(backBufferGraphics);
-        }
-
-        for (int i = 0; i < plane.getBullet().size(); i++) {
-            plane.getBullet().get(i).drawImage(backBufferGraphics);
-        }
-
-        for (int i = 0; i < plane2.getBullet().size(); i++) {
-            plane2.getBullet().get(i).drawImage(backBufferGraphics);
-        }
-
-        for (int i = 0; i < enemy.size(); i++) {
-            for (int j = 0; j < enemy.get(i).getBullet().size(); j++) {
-                enemy.get(i).getBullet().get(j).drawImage(backBufferGraphics);
-            }
+        planeController.draw(backBufferGraphics);
+        planeControllerMouse.draw(backBufferGraphics);
+        for (int i = 0; i < vector.size(); i++) {
+            vector.get(i).draw(backBufferGraphics);
         }
 
         g.drawImage(backBufferImage, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, null);
@@ -206,43 +198,33 @@ public class GameWindow extends Frame implements Runnable{
 
     @Override
     public void run() {
+        int now = ENEMY_APPERENCE_FREQ;
         while (true) {
+            if (enemy_lastApperance >= ENEMY_APPERENCE_FREQ) {
+                vector.add(new EnemyController(
+                        new Enemy(r.nextInt(BACKGROUND_WIDTH) - Enemy.ENEMY_WIDTH, 10),
+                        new EnemyView(Utils.loadImageFromRes("enemy_plane_yellow_1.png"))
+                ));
+                enemy_lastApperance = -1;
+            }
+            enemy_lastApperance++;
+
             try {
-                Thread.sleep(17);
-
-                for (int i = 0; i < plane.getBullet().size(); i++) {
-                    plane.getBullet().get(i).move();
-                }
-                for (int i = 0; i < plane2.getBullet().size(); i++) {
-                    plane2.getBullet().get(i).move();
-                }
-
-                long now = System.currentTimeMillis();
-                if (now - enemy_lastApperance >= ENEMY_APPERENCE_FREQ) {
-                    Random r = new Random();
-                    int x = r.nextInt(BACKGROUND_WIDTH - Enemy.getENEMY_WIDTH());
-                    enemy.add(new Enemy(x, 0, ImageIO.read(new File("resources/enemy_plane_white_2.png"))));
-                    enemy_lastApperance = now;
-                }
-
-                for (int i = 0; i < enemy.size(); i++) {
-                    enemy.get(i).move();
-                }
-
-                for (int i = 0; i < enemy.size(); i++) {
-                    enemy.get(i).fire();
-                }
-//
-                for (int i = 0; i < enemy.size(); i++) {
-                    for (int j = 0; j < enemy.get(i).getBullet().size(); j++) {
-                        enemy.get(i).getBullet().get(j).move_enemy();
-                    }
-                }
-
+                Thread.sleep(MILLIS_PER_FRAME);
                 repaint();
+
+                planeController.run();
+                planeControllerMouse.run();
+
+                for (int i = 0; i < vector.size(); i++) {
+                    vector.get(i).run();
+                }
+
+                for (EnemyController enemyController : vector) {
+                    enemyController.fire();
+                }
+
             } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
