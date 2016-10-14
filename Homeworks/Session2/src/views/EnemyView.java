@@ -12,7 +12,7 @@ public class EnemyView {
     private Image image;
 
     public void drawImage(Graphics g, Enemy enemy) {
-        g.drawImage(image, enemy.getX(), enemy.getY(), Enemy.ENEMY_WIDTH, Enemy.ENEMY_HEIGHT, null);
+//        g.drawImage(image, enemy.getX(), enemy.getY(), Enemy.ENEMY_WIDTH, Enemy.ENEMY_HEIGHT, null);
     }
 
     // Constructer

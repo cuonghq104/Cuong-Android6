@@ -8,11 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by Cuong on 10/9/2016.
  */
-public class EnemyBullet {
-
-    private int x;
-
-    private int y;
+public class EnemyBullet extends GameObject{
 
     public static final int SPEED_ENEMY_PLANE = 10;
 
@@ -21,23 +17,19 @@ public class EnemyBullet {
 
     ArrayList<EnemyBulletController> arrayList;
 
+    public EnemyBullet(int x, int y) {
+        super(x, y, BULLET_WIDTH, BULLET_HEIGHT);
+    }
+
     /* Getter & Setter */
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public EnemyBullet(int x, int y) {
-        this.x = x;
-        this.y = y;
-        arrayList = new ArrayList<>();
-    }
-
-    public void move() {
-        y += SPEED_ENEMY_PLANE;
-    }
+//    public EnemyBullet(int x, int y) {
+//        this.x = x;
+//        this.y = y;
+//        arrayList = new ArrayList<>();
+//    }
+//
+//    public void move() {
+//        y += SPEED_ENEMY_PLANE;
+//    }
 }

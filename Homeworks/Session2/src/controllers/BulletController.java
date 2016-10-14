@@ -1,41 +1,24 @@
 package controllers;
 
-import models.Bullet;
-import views.BulletView;
+import models.GameObject;
+import views.GameView;
 
 import java.awt.*;
 
 /**
  * Created by Cuong on 10/9/2016.
  */
-public class BulletController {
-
-    Bullet bullet;
-
-    BulletView bulletView;
+public class BulletController extends SingleController {
 
 
-    public BulletController(Bullet bullet, BulletView bulletView) {
-        this.bullet = bullet;
-        this.bulletView = bulletView;
+    public static final int SPEED = 10;
+
+    public BulletController(GameObject gameObject, GameView gameView) {
+        super(gameObject, gameView);
     }
-
-    public BulletView getBulletView() {
-        return bulletView;
-    }
-
-    public Bullet getBullet() {
-        return bullet;
-    }
-
-    public void draw(Graphics g) {
-        bulletView.drawImage(g, bullet);
-        // Views - models
-    }
-
+    @Override
     public void run() {
-        bullet.move();
+        gameObject.move(0, -SPEED);
     }
-
 
 }

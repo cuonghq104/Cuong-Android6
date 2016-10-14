@@ -1,10 +1,9 @@
 package controllers;
 
 import models.Bullet;
-import models.Plane;
+import models.GameObject;
 import utils.Utils;
-import views.BulletView;
-import views.PlaneView;
+import views.GameView;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -14,44 +13,45 @@ import java.util.Vector;
 /**
  * Created by Cuong on 10/9/2016.
  */
-public class PlaneController {
+public class PlaneController extends SingleController {
 
-    private Plane plane;
-    private PlaneView planeView;
-    private int dx;
-    private int dy;
     private static final int SPEED = 10;
-    private static final int RELOAD_TIME = 10;
+    private static final int RELOAD_TIME = 15;
     private int count;
 
-    private Vector<BulletController> vector;
 
-    public PlaneController(Plane plane, PlaneView planeView) {
-        vector = new Vector<>();
-        this.plane = plane;
-        this.planeView = planeView;
-        count = RELOAD_TIME;
+    ControllerManager bulletControllerManager;
+
+    public PlaneController(GameObject gameObject, GameView gameView) {
+        super(gameObject, gameView);
+        bulletControllerManager = new ControllerManager();
+    }
+
+    public ControllerManager getBulletControllerManager() {
+        return bulletControllerManager;
     }
 
     public void keyPressed(KeyEvent e) {
-        System.out.println("keyPressed");
         switch(e.getKeyCode()) {
             case KeyEvent.VK_RIGHT:
                 dx = SPEED;
                 break;
             case KeyEvent.VK_LEFT:
-                System.out.println("KEY Left");
                 dx = -SPEED;
                 break;
             case KeyEvent.VK_UP:
-                System.out.println("KEY UP");
                 dy = -SPEED;
                 break;
             case KeyEvent.VK_DOWN:
-                System.out.println("KEY DOWN");
                 dy = SPEED;
                 break;
         }
+    }
+
+    @Override
+    public void draw(Graphics graphics) {
+        super.draw(graphics);
+        bulletControllerManager.draw(graphics);
     }
 
     public void keyReleased(KeyEvent e) {
@@ -60,69 +60,47 @@ public class PlaneController {
                 dx = 0;
                 break;
             case KeyEvent.VK_LEFT:
-                System.out.println("KEY Left");
                 dx = 0;
                 break;
             case KeyEvent.VK_UP:
-                System.out.println("KEY UP");
                 dy = 0;
                 break;
             case KeyEvent.VK_DOWN:
-                System.out.println("KEY DOWN");
                 dy = 0;
                 break;
         }
     }
 
+    @Override
     public void run() {
-        plane.move(dx, dy);
-        for (int i = 0; i < vector.size(); i++) {
-            vector.get(i).run();
-        }
+        gameObject.move(dx, dy);
+        bulletControllerManager.run();
+
         count++;
     }
 
 
-    public void draw(Graphics g) {
-        planeView.drawImage(g, plane);
-        for (int i = 0; i < vector.size(); i++) {
-            vector.get(i).draw(g);
-        }
-    }
-
     public void mouseMoved(MouseEvent e) {
-        System.out.println("mouseMoved");
-        plane.moveTo(e.getX() - plane.PLANE_WIDTH / 2,
-                e.getY() - plane.PLANE_HEIGHT / 2);
+        gameObject.moveTo(e.getX() - gameObject.getWidth() / 2,
+                e.getY() - gameObject.getHeight() / 2);
     }
 
     public void mouseDragged(MouseEvent e) {
         mouseMoved(e);
         if (count >= RELOAD_TIME) {
-            fire(e);
+            fire();
             count = 0;
         }
     }
 
-    public void fire(KeyEvent e) {
+    public void fire() {
         if (count >= RELOAD_TIME) {
-            vector.add(new BulletController(
-                    new Bullet(plane.getX() + ((plane.PLANE_WIDTH - Bullet.BULLET_WIDTH) / 2), plane.getY() - Bullet.BULLET_HEIGHT),
-                    new BulletView(Utils.loadImageFromRes("bullet.png"))
+            bulletControllerManager.add(new BulletController(
+                    new Bullet(gameObject.getX() + ((gameObject.getWidth() - Bullet.BULLET_WIDTH) / 2), gameObject.getY() - Bullet.BULLET_HEIGHT),
+                    new GameView(Utils.loadImageFromRes("bullet.png"))
             ));
             count = 0;
         }
-    }
-
-    public void fire(MouseEvent e) {
-        if (count >= RELOAD_TIME) {
-            vector.add(new BulletController(
-                    new Bullet(plane.getX() + ((plane.PLANE_WIDTH - Bullet.BULLET_WIDTH) / 2), plane.getY() - Bullet.BULLET_HEIGHT),
-                    new BulletView(Utils.loadImageFromRes("bullet.png"))
-            ));
-            count = 0;
-        }
-
     }
 
 }

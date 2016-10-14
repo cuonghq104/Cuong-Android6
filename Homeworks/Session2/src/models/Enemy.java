@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Created by Cuong on 10/8/2016.
  */
-public class Enemy {
+public class Enemy extends GameObject{
 
     public static final int ENEMY_WIDTH = 32;
 
@@ -19,32 +19,20 @@ public class Enemy {
 
     private final int SPEED = 2;
 
-    private int x;
-
-    private int y;
-
     ArrayList<Bullet> bullet;
 
-    // Getter
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
+    public Enemy(int x, int y) {
+        super(x, y, ENEMY_WIDTH, ENEMY_HEIGHT);
     }
 
     // Constructer
 
-    public Enemy(int x, int y) {
-        this.x = x;
-        this.y = y;
-        bullet = new ArrayList<>();
-    }
+//    public Enemy(int x, int y) {
+//        this.x = x;
+//        this.y = y;
+//        bullet = new ArrayList<>();
+//    }
 
-    public void fly() {
-        y += SPEED;
-    }
 
 
 }

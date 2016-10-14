@@ -1,42 +1,29 @@
 package controllers;
 
 import models.EnemyBullet;
+import models.GameObject;
 import views.EnemyBulletView;
+import views.GameView;
 
 import java.awt.*;
 
 /**
  * Created by Cuong on 10/10/2016.
  */
-public class EnemyBulletController {
+public class EnemyBulletController extends SingleController{
 
-    EnemyBullet enemyBullet;
+    public static final int SPEED = 5;
 
-    EnemyBulletView enemyBulletView;
-
-    /* Constructer */
-
-    public EnemyBulletController(EnemyBullet enemyBullet, EnemyBulletView enemyBulletView) {
-        this.enemyBullet = enemyBullet;
-        this.enemyBulletView = enemyBulletView;
-    }
-
-    /* Getter & Setter */
-
-    public EnemyBullet getEnemyBullet() {
-        return enemyBullet;
-    }
-
-    public EnemyBulletView getEnemyBulletView() {
-        return enemyBulletView;
+    public EnemyBulletController(GameObject gameObject, GameView gameView) {
+        super(gameObject, gameView);
     }
 
     public void draw(Graphics g) {
-        enemyBulletView.drawImage(g, enemyBullet);
+        gameView.drawImage(g, gameObject);
     }
 
     public void run() {
-        enemyBullet.move();
+        gameObject.move(0, SPEED);
     }
 
 

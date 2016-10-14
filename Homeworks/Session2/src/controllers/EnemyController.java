@@ -2,9 +2,11 @@ package controllers;
 
 import models.Enemy;
 import models.EnemyBullet;
+import models.GameObject;
 import utils.Utils;
 import views.EnemyBulletView;
 import views.EnemyView;
+import views.GameView;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -12,49 +14,36 @@ import java.util.ArrayList;
 /**
  * Created by Cuong on 10/10/2016.
  */
-public class EnemyController {
+public class EnemyController extends SingleController {
 
-    private Enemy enemy;
 
-    private EnemyView enemyView;
+    ControllerManager enemyBulletControlManager;
 
-    ArrayList<EnemyBulletController> arrayList;
+//    ControllerManager enemyBulletControlManager;
 
-    private static final int RELOAD_TIME = 50;
+    private static final int SPEED = 2;
+
+    private static final int RELOAD_TIME = 100;
 
     private int counter;
 
-    /* Constructer */
-
-    public EnemyController(Enemy enemy, EnemyView enemyView) {
-        this.enemy = enemy;
-        this.enemyView = enemyView;
-        arrayList = new ArrayList<>();
+    public EnemyController(GameObject gameObject, GameView gameView) {
+        super(gameObject, gameView);
         counter = RELOAD_TIME;
-    }
-
-    /* Getter & Setter */
-
-    public Enemy getEnemy() {
-        return enemy;
-    }
-
-    public EnemyView getEnemyView() {
-        return enemyView;
+        enemyBulletControlManager = new ControllerManager();
     }
 
     public void run() {
-        enemy.fly();
-        for (EnemyBulletController enemyBulletController : arrayList) {
-            enemyBulletController.run();
-        }
+        gameObject.move(0, SPEED);
+        enemyBulletControlManager.run();
+
     }
 
     public void fire() {
         if (counter == RELOAD_TIME) {
-            arrayList.add(new EnemyBulletController(
-                    new EnemyBullet(enemy.getX() + (Enemy.ENEMY_WIDTH - EnemyBullet.BULLET_WIDTH) / 2, enemy.getY() + EnemyBullet.BULLET_HEIGHT),
-                    new EnemyBulletView(Utils.loadImageFromRes("enemy_bullet.png"))
+            enemyBulletControlManager.add(new EnemyBulletController(
+                    new EnemyBullet(gameObject.getX() + (Enemy.ENEMY_WIDTH - EnemyBullet.BULLET_WIDTH) / 2, gameObject.getY() + EnemyBullet.BULLET_HEIGHT),
+                    new GameView(Utils.loadImageFromRes("enemy_bullet.png"))
             ));
             counter = -1;
         }
@@ -62,10 +51,8 @@ public class EnemyController {
     }
 
     public void draw(Graphics g) {
-        enemyView.drawImage(g, enemy);
-        for (EnemyBulletController enemyBulletController : arrayList) {
-            enemyBulletController.draw(g);
-        }
+        gameView.drawImage(g, gameObject);
+        enemyBulletControlManager.draw(g);
     }
 
 

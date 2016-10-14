@@ -1,10 +1,8 @@
-import controllers.EnemyController;
-import controllers.PlaneController;
+import controllers.*;
 import models.Enemy;
 import models.Plane;
 import utils.Utils;
-import views.EnemyView;
-import views.PlaneView;
+import views.GameView;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -12,7 +10,6 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Vector;
 
@@ -28,13 +25,15 @@ public class GameWindow extends Frame implements Runnable{
     private PlaneController planeController;
     private PlaneController planeControllerMouse;
 
-    Vector<EnemyController> vector;
-
     private static final int BACKGROUND_WIDTH = 600;
     private static final int BACKGROUND_HEIGHT = 350;
 
     private static final int ENEMY_APPERENCE_FREQ = 100;
     private static final int MILLIS_PER_FRAME = 17;
+
+    ControllerManager controllerManager;
+    EnemyControllerManager enemyControllerManager;
+
 
     private long enemy_lastApperance;
 
@@ -42,25 +41,34 @@ public class GameWindow extends Frame implements Runnable{
     private Random r;
 
 
+    CollieManager collieManager;
+
     public GameWindow() {
+
+
+        controllerManager = new ControllerManager();
+        enemyControllerManager = new EnemyControllerManager();
 
         planeController = new PlaneController(
                 new Plane(BACKGROUND_WIDTH / 2, BACKGROUND_HEIGHT - 100),
-                new PlaneView(Utils.loadImageFromRes("plane3.png"))
+                new GameView(Utils.loadImageFromRes("plane3.png"))
         );
 
         planeControllerMouse = new PlaneController(
                 new Plane(BACKGROUND_WIDTH / 2, BACKGROUND_HEIGHT - 200),
-                new PlaneView(Utils.loadImageFromRes("plane4.png"))
+                new GameView(Utils.loadImageFromRes("plane4.png"))
         );
 
-        vector = new Vector<>();
+        controllerManager.add(planeController);
+        controllerManager.add(planeControllerMouse);
 
         backBufferImage = new BufferedImage(BACKGROUND_WIDTH, BACKGROUND_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
         r = new Random();
 
         enemy_lastApperance = ENEMY_APPERENCE_FREQ;
+
+        collieManager = new CollieManager(controllerManager, enemyControllerManager);
 
         this.setVisible(true);
         this.setSize(BACKGROUND_WIDTH,BACKGROUND_HEIGHT);
@@ -72,33 +80,27 @@ public class GameWindow extends Frame implements Runnable{
 
             @Override
             public void windowClosing(WindowEvent e) {
-                System.out.println("windowClosing");
                 System.exit(0);
             }
 
             @Override
             public void windowClosed(WindowEvent e) {
-                System.out.println("windowClosed");
             }
 
             @Override
             public void windowIconified(WindowEvent e) {
-                System.out.println("windowIconified");
             }
 
             @Override
             public void windowDeiconified(WindowEvent e) {
-                System.out.println("windowDeiconified");
             }
 
             @Override
             public void windowActivated(WindowEvent e) {
-                System.out.println("windowActivated");
             }
 
             @Override
             public void windowDeactivated(WindowEvent e) {
-                System.out.println("windowDeactivated");
             }
         });
 
@@ -106,7 +108,7 @@ public class GameWindow extends Frame implements Runnable{
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                planeControllerMouse.fire(e);
+                planeControllerMouse.fire();
             }
 
             @Override
@@ -145,21 +147,18 @@ public class GameWindow extends Frame implements Runnable{
         this.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                System.out.println("keyTyped");
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
-                System.out.println("keyPressed");
                 planeController.keyPressed(e);
                 if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-                    planeController.fire(e);
+                    planeController.fire();
                 }
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                System.out.println("keyReleased");
                 planeController.keyReleased(e);
             }
         });
@@ -187,23 +186,21 @@ public class GameWindow extends Frame implements Runnable{
         Graphics backBufferGraphics = backBufferImage.getGraphics();
 
         backBufferGraphics.drawImage(backgroundImage, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, null);
-        planeController.draw(backBufferGraphics);
-        planeControllerMouse.draw(backBufferGraphics);
-        for (int i = 0; i < vector.size(); i++) {
-            vector.get(i).draw(backBufferGraphics);
-        }
+
+        enemyControllerManager.draw(backBufferGraphics);
+        controllerManager.draw(backBufferGraphics);
 
         g.drawImage(backBufferImage, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, null);
     }
 
     @Override
     public void run() {
-        int now = ENEMY_APPERENCE_FREQ;
         while (true) {
+            collieManager.run();
             if (enemy_lastApperance >= ENEMY_APPERENCE_FREQ) {
-                vector.add(new EnemyController(
+                enemyControllerManager.add(new EnemyController(
                         new Enemy(r.nextInt(BACKGROUND_WIDTH) - Enemy.ENEMY_WIDTH, 10),
-                        new EnemyView(Utils.loadImageFromRes("enemy_plane_yellow_1.png"))
+                        new GameView(Utils.loadImageFromRes("enemy_plane_yellow_1.png"))
                 ));
                 enemy_lastApperance = -1;
             }
@@ -213,16 +210,8 @@ public class GameWindow extends Frame implements Runnable{
                 Thread.sleep(MILLIS_PER_FRAME);
                 repaint();
 
-                planeController.run();
-                planeControllerMouse.run();
-
-                for (int i = 0; i < vector.size(); i++) {
-                    vector.get(i).run();
-                }
-
-                for (EnemyController enemyController : vector) {
-                    enemyController.fire();
-                }
+                controllerManager.run();
+                enemyControllerManager.run();
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
