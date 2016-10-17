@@ -1,5 +1,7 @@
 package models;
 
+import java.awt.*;
+
 /**
  * Created by Cuong on 10/11/2016.
  */
@@ -9,15 +11,42 @@ public class GameObject {
 
     protected int y;
 
+    protected int hp;
+
     private int width;
 
     private int height;
 
-    public GameObject(int x, int y, int width, int height) {
+    private boolean isAlive;
+
+    public GameObject(int x, int y, int width, int height, int hp) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.hp = hp;
+        isAlive = true;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void hit() {
+        if (hp < 1)
+            return;
+        hp--;
+        if (hp == 0) {
+            isAlive = false;
+        }
     }
 
     public int getX() {
@@ -61,5 +90,14 @@ public class GameObject {
         this.y = dy;
     }
 
+    private Rectangle getRect() {
+        return new Rectangle(x, y, width, height);
+    }
+
+    public boolean checkColliedWith(GameObject gameObject) {
+        Rectangle rect1 = this.getRect();
+        Rectangle rect2 = gameObject.getRect();
+        return rect1.intersects(rect2);
+    }
 
 }

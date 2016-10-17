@@ -18,9 +18,16 @@ public class Plane extends GameObject{
     public static final int PLANE_WIDTH = 60;
     public static final int PLANE_HEIGHT = 35;
 
+    public static final int PLANE_HP = 3;
+
+//    private int hp;
+
     public Plane(int x, int y) {
-        super(x, y, PLANE_WIDTH, PLANE_HEIGHT);
+        super(x, y, PLANE_WIDTH, PLANE_HEIGHT, PLANE_HP);
+//        hp = 3;
     }
+
+
 
     public void move(int dx, int dy) {
         x += dx;

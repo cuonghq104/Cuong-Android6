@@ -1,39 +1,17 @@
 package controllers;
 
+import models.Enemy;
+import utils.Utils;
+import views.GameView;
+
 import java.awt.*;
 import java.util.Vector;
 
 /**
  * Created by Cuong on 10/13/2016.
  */
-public class EnemyControllerManager{
-
-    Vector<EnemyController> enemyControllers;
-
+public class EnemyControllerManager extends ControllerManager {
     public EnemyControllerManager() {
-        this.enemyControllers = new Vector<>();
+        super();
     }
-
-    public void add(EnemyController enemyController) {
-        enemyControllers.add(enemyController);
-    }
-
-    public void run() {
-        for (EnemyController enemyController : enemyControllers) {
-            enemyController.run();
-            enemyController.fire();
-        }
-    }
-
-    public Vector<EnemyController> getEnemyControllers() {
-        return enemyControllers;
-    }
-
-    public void draw(Graphics g) {
-        for (EnemyController enemyController : enemyControllers) {
-            enemyController.draw(g);
-        }
-    }
-
-
 }

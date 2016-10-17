@@ -1,5 +1,6 @@
 package controllers;
 
+import models.GameConfig;
 import models.GameObject;
 import views.GameView;
 
@@ -23,7 +24,7 @@ public class SingleController implements BaseController{
     }
 
     public void draw(Graphics graphics) {
-        gameView.drawImage(graphics, gameObject);
+            gameView.drawImage(graphics, gameObject);
     }
 
     public SingleController(GameObject gameObject, GameView gameView) {
@@ -32,6 +33,20 @@ public class SingleController implements BaseController{
     }
 
     public void run() {
+        if (GameConfig.instance.yOutsideScreen(gameObject)) {
+            gameObject.setAlive(false);
+        }
+    }
 
+    public boolean checkCollideWith(SingleController singleController) {
+        return this.gameObject.checkColliedWith(singleController.gameObject);
+    }
+
+    public void destroy() {
+        gameObject.setAlive(false);
+    }
+
+    public void hit() {
+        gameObject.hit();
     }
 }

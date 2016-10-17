@@ -1,6 +1,6 @@
 import controllers.*;
 import models.Enemy;
-import models.Plane;
+import models.GameConfig;
 import utils.Utils;
 import views.GameView;
 
@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-import java.util.Vector;
 
 /**
  * Created by Cuong on 10/2/2016.
@@ -25,11 +24,11 @@ public class GameWindow extends Frame implements Runnable{
     private PlaneController planeController;
     private PlaneController planeControllerMouse;
 
-    private static final int BACKGROUND_WIDTH = 600;
-    private static final int BACKGROUND_HEIGHT = 350;
+
+    private int background_width = GameConfig.getInstance().getScreenWidth();
+    private int background_height = GameConfig.instance.getScreenHeight();
 
     private static final int ENEMY_APPERENCE_FREQ = 100;
-    private static final int MILLIS_PER_FRAME = 17;
 
     ControllerManager controllerManager;
     EnemyControllerManager enemyControllerManager;
@@ -41,7 +40,7 @@ public class GameWindow extends Frame implements Runnable{
     private Random r;
 
 
-    CollieManager collieManager;
+//    CollieManager collieManager;
 
     public GameWindow() {
 
@@ -49,29 +48,22 @@ public class GameWindow extends Frame implements Runnable{
         controllerManager = new ControllerManager();
         enemyControllerManager = new EnemyControllerManager();
 
-        planeController = new PlaneController(
-                new Plane(BACKGROUND_WIDTH / 2, BACKGROUND_HEIGHT - 100),
-                new GameView(Utils.loadImageFromRes("plane3.png"))
-        );
-
-        planeControllerMouse = new PlaneController(
-                new Plane(BACKGROUND_WIDTH / 2, BACKGROUND_HEIGHT - 200),
-                new GameView(Utils.loadImageFromRes("plane4.png"))
-        );
+        planeController = PlaneController.planeController;
+        planeControllerMouse = PlaneController.planeControllerMouse;
 
         controllerManager.add(planeController);
         controllerManager.add(planeControllerMouse);
-
-        backBufferImage = new BufferedImage(BACKGROUND_WIDTH, BACKGROUND_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        controllerManager.add(enemyControllerManager);
+        controllerManager.add(CollisionPool.instance);
+        backBufferImage = new BufferedImage(background_width, background_height, BufferedImage.TYPE_INT_ARGB);
 
         r = new Random();
 
         enemy_lastApperance = ENEMY_APPERENCE_FREQ;
 
-        collieManager = new CollieManager(controllerManager, enemyControllerManager);
 
         this.setVisible(true);
-        this.setSize(BACKGROUND_WIDTH,BACKGROUND_HEIGHT);
+        this.setSize(background_width,background_height);
         this.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -185,21 +177,21 @@ public class GameWindow extends Frame implements Runnable{
 
         Graphics backBufferGraphics = backBufferImage.getGraphics();
 
-        backBufferGraphics.drawImage(backgroundImage, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, null);
+        backBufferGraphics.drawImage(backgroundImage, 0, 0, background_width, background_height, null);
 
         enemyControllerManager.draw(backBufferGraphics);
         controllerManager.draw(backBufferGraphics);
 
-        g.drawImage(backBufferImage, 0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, null);
+        g.drawImage(backBufferImage, 0, 0, background_width, background_height, null);
     }
 
     @Override
     public void run() {
         while (true) {
-            collieManager.run();
+//            collieManager.run();
             if (enemy_lastApperance >= ENEMY_APPERENCE_FREQ) {
-                enemyControllerManager.add(new EnemyController(
-                        new Enemy(r.nextInt(BACKGROUND_WIDTH) - Enemy.ENEMY_WIDTH, 10),
+                enemyControllerManager.add(new EnemyPlaneController(
+                        new Enemy(r.nextInt(background_width) - Enemy.ENEMY_WIDTH, 10),
                         new GameView(Utils.loadImageFromRes("enemy_plane_yellow_1.png"))
                 ));
                 enemy_lastApperance = -1;
@@ -207,7 +199,7 @@ public class GameWindow extends Frame implements Runnable{
             enemy_lastApperance++;
 
             try {
-                Thread.sleep(MILLIS_PER_FRAME);
+                Thread.sleep(GameConfig.getInstance().getThreadDelayInMilliseconds());
                 repaint();
 
                 controllerManager.run();

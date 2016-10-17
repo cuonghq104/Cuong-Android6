@@ -17,12 +17,13 @@ public class Enemy extends GameObject{
 
     public static final int ENEMY_HEIGHT = 32;
 
+    public static final int ENEMY_HP = 1;
     private final int SPEED = 2;
 
     ArrayList<Bullet> bullet;
 
     public Enemy(int x, int y) {
-        super(x, y, ENEMY_WIDTH, ENEMY_HEIGHT);
+        super(x, y, ENEMY_WIDTH, ENEMY_HEIGHT, ENEMY_HP);
     }
 
     // Constructer

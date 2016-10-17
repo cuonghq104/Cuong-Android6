@@ -1,7 +1,9 @@
 package controllers;
 
 import models.Bullet;
+import models.GameConfig;
 import models.GameObject;
+import models.Plane;
 import utils.Utils;
 import views.GameView;
 
@@ -13,7 +15,7 @@ import java.util.Vector;
 /**
  * Created by Cuong on 10/9/2016.
  */
-public class PlaneController extends SingleController {
+public class PlaneController extends SingleController implements Contactable{
 
     private static final int SPEED = 10;
     private static final int RELOAD_TIME = 15;
@@ -25,6 +27,7 @@ public class PlaneController extends SingleController {
     public PlaneController(GameObject gameObject, GameView gameView) {
         super(gameObject, gameView);
         bulletControllerManager = new ControllerManager();
+        CollisionPool.instance.register(this);
     }
 
     public ControllerManager getBulletControllerManager() {
@@ -103,4 +106,24 @@ public class PlaneController extends SingleController {
         }
     }
 
+    public static final PlaneController planeController = new PlaneController(
+        new Plane(GameConfig.instance.getScreenWidth() / 2, GameConfig.instance.getScreenHeight() - 100),
+        new GameView(Utils.loadImageFromRes("plane3.png"))
+    );
+
+    public static final PlaneController planeControllerMouse = new PlaneController(
+        new Plane(GameConfig.instance.getScreenWidth() / 2, GameConfig.instance.getScreenHeight() - 200),
+        new GameView(Utils.loadImageFromRes("plane4.png"))
+    );
+
+    @Override
+    public void onCollide(Contactable contactable) {
+        if (contactable instanceof EnemyBulletController) {
+            ((EnemyBulletController) contactable).destroy();
+        }
+    }
+
+    public void printHP() {
+        System.out.println("HP left : " + gameObject.getHp());
+    }
 }

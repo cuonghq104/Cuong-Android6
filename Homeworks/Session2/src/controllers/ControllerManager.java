@@ -1,6 +1,10 @@
 package controllers;
 
+import models.GameConfig;
+import models.GameObject;
+
 import java.awt.*;
+import java.util.Iterator;
 import java.util.Vector;
 
 /**
@@ -9,31 +13,42 @@ import java.util.Vector;
 
 public class ControllerManager implements BaseController{
 
-    private Vector<SingleController> singleControllers;
+    public Vector<BaseController> baseControllers;
 
     public ControllerManager() {
-        this.singleControllers = new Vector<>();
+        this.baseControllers = new Vector<>();
     }
 
-    public void add(SingleController singleController) {
-        singleControllers.add(singleController);
+    public void add(BaseController baseController) {
+        baseControllers.add(baseController);
     }
 
-    public Vector<SingleController> getSingleControllers() {
-        return singleControllers;
+    public Vector<BaseController> getBaseControllers() {
+        return baseControllers;
     }
 
     @Override
     public void run() {
-        for (SingleController singleController : singleControllers) {
-            singleController.run();
+        Iterator<BaseController> iterator = baseControllers.iterator();
+        while (iterator.hasNext()) {
+            BaseController baseController = iterator.next();
+            if (baseController instanceof SingleController) {
+                GameObject gameObject = ((SingleController) baseController).getGameObject();
+                if (!gameObject.isAlive()) {
+                    iterator.remove();
+                } else {
+                    baseController.run();
+                }
+            } else {
+                baseController.run();
+            }
         }
     }
 
     @Override
     public void draw(Graphics g) {
-        for (SingleController singleController : singleControllers) {
-            singleController.draw(g);
+        for (BaseController baseController : baseControllers) {
+            baseController.draw(g);
         }
     }
 
