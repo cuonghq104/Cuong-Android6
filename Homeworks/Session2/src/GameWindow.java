@@ -1,8 +1,6 @@
 import controllers.*;
 import models.Enemy;
 import models.GameConfig;
-import utils.Utils;
-import views.GameView;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -24,6 +22,7 @@ public class GameWindow extends Frame implements Runnable{
     private PlaneController planeController;
     private PlaneController planeControllerMouse;
 
+    private GiftController giftController;
 
     private int background_width = GameConfig.getInstance().getScreenWidth();
     private int background_height = GameConfig.instance.getScreenHeight();
@@ -36,25 +35,30 @@ public class GameWindow extends Frame implements Runnable{
 
     private long enemy_lastApperance;
 
-
     private Random r;
 
+    int count;
 
-//    CollieManager collieManager;
 
     public GameWindow() {
 
+        giftController = GiftController.create(GameConfig.getDefaultWidth() / 2, 10);
+
+        count = 0;
 
         controllerManager = new ControllerManager();
         enemyControllerManager = new EnemyControllerManager();
 
         planeController = PlaneController.planeController;
         planeControllerMouse = PlaneController.planeControllerMouse;
+        planeControllerMouse.setPlaneShootingType(PlaneShootingType.SINGLE);
 
         controllerManager.add(planeController);
         controllerManager.add(planeControllerMouse);
         controllerManager.add(enemyControllerManager);
+        controllerManager.add(giftController);
         controllerManager.add(CollisionPool.instance);
+
         backBufferImage = new BufferedImage(background_width, background_height, BufferedImage.TYPE_INT_ARGB);
 
         r = new Random();
@@ -64,6 +68,7 @@ public class GameWindow extends Frame implements Runnable{
 
         this.setVisible(true);
         this.setSize(background_width,background_height);
+        this.setLocation(300,0);
         this.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -188,12 +193,30 @@ public class GameWindow extends Frame implements Runnable{
     @Override
     public void run() {
         while (true) {
+//            giftController.run();
 //            collieManager.run();
+            FlyBehavior flyBehavior;
+            ShootBehavior shootBehavior;
+            EnemyPlaneController enemyPlaneController;
             if (enemy_lastApperance >= ENEMY_APPERENCE_FREQ) {
-                enemyControllerManager.add(new EnemyPlaneController(
-                        new Enemy(r.nextInt(background_width) - Enemy.ENEMY_WIDTH, 10),
-                        new GameView(Utils.loadImageFromRes("enemy_plane_yellow_1.png"))
-                ));
+                count++;
+                if (count % 4 == 0) {
+                    enemyPlaneController = EnemyPlaneController.create(r.nextInt(background_width) - Enemy.ENEMY_WIDTH, 10, EnemyPlaneType.BLACK);
+                } else if (count % 4 == 1) {
+                    enemyPlaneController = EnemyPlaneController.create(r.nextInt(background_width) - Enemy.ENEMY_WIDTH, 10, EnemyPlaneType.WHITE);
+                } else if (count % 4 == 2){
+                    enemyPlaneController = EnemyPlaneController.create(r.nextInt(background_width) - Enemy.ENEMY_WIDTH, 10, EnemyPlaneType.YELLOW);
+                } else {
+                    enemyPlaneController = EnemyPlaneController.create(r.nextInt(background_width) - Enemy.ENEMY_WIDTH, 10, EnemyPlaneType.GREEN);
+                }
+                enemyControllerManager.add(enemyPlaneController);
+//                enemyControllerManager.add(new EnemyPlaneController(
+//                        new Enemy(r.nextInt(background_width) - Enemy.ENEMY_WIDTH, 10),
+//                        new GameView(Utils.loadImageFromRes("enemy_plane_yellow_1.png")),
+//                        flyBehavior,
+//                        shootBehavior
+//                ));
+
                 enemy_lastApperance = -1;
             }
             enemy_lastApperance++;

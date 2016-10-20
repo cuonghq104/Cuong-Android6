@@ -10,8 +10,6 @@ import java.util.ArrayList;
  */
 public class EnemyBullet extends GameObject{
 
-    public static final int SPEED_ENEMY_PLANE = 10;
-
     public static final int BULLET_WIDTH = 32;
     public static final int BULLET_HEIGHT = 32;
 
@@ -20,7 +18,7 @@ public class EnemyBullet extends GameObject{
     ArrayList<EnemyBulletController> arrayList;
 
     public EnemyBullet(int x, int y) {
-        super(x, y, BULLET_WIDTH, BULLET_HEIGHT, HP);
+        super(x, y, BULLET_WIDTH, BULLET_HEIGHT);
     }
 
 }

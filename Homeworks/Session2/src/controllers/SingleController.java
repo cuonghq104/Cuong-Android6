@@ -47,6 +47,6 @@ public class SingleController implements BaseController{
     }
 
     public void hit() {
-        gameObject.hit();
+//        gameObject.hit();
     }
 }

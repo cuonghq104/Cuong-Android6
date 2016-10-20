@@ -1,20 +1,16 @@
 package models;
 
-import java.awt.*;
-
 /**
  * Created by Cuong on 10/4/2016.
  */
 public class Bullet extends GameObject{
     public static final int BULLET_SPEED = 20;
 
-    public static final int BULLET_WIDTH = 10;
-    public static final int BULLET_HEIGHT = 30;
-
-    public static final int HP = 1;
+    public static int bullet_width = 13;
+    public static int bullet_height = 33;
 
     public Bullet(int x, int y) {
-        super(x, y, BULLET_WIDTH, BULLET_HEIGHT, HP);
+        super(x, y, bullet_width, bullet_height);
     }
 
     public void move() {

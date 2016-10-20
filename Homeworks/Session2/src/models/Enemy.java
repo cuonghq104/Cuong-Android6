@@ -23,7 +23,7 @@ public class Enemy extends GameObject{
     ArrayList<Bullet> bullet;
 
     public Enemy(int x, int y) {
-        super(x, y, ENEMY_WIDTH, ENEMY_HEIGHT, ENEMY_HP);
+        super(x, y, ENEMY_WIDTH, ENEMY_HEIGHT);
     }
 
     // Constructer

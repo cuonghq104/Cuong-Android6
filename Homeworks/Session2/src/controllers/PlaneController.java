@@ -1,16 +1,12 @@
 package controllers;
 
-import models.Bullet;
-import models.GameConfig;
-import models.GameObject;
-import models.Plane;
+import models.*;
 import utils.Utils;
 import views.GameView;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Vector;
 
 /**
  * Created by Cuong on 10/9/2016.
@@ -22,12 +18,18 @@ public class PlaneController extends SingleController implements Contactable{
     private int count;
 
 
-    ControllerManager bulletControllerManager;
+    private ControllerManager bulletControllerManager;
 
-    public PlaneController(GameObject gameObject, GameView gameView) {
+    private BulletController bulletController;
+
+    private PlaneShootingType planeShootingType;
+
+    public PlaneController(Plane gameObject, GameView gameView) {
+//        planeShootingType = new Pl
         super(gameObject, gameView);
         bulletControllerManager = new ControllerManager();
         CollisionPool.instance.register(this);
+//        bulletController = new BulletController()
     }
 
     public ControllerManager getBulletControllerManager() {
@@ -98,10 +100,20 @@ public class PlaneController extends SingleController implements Contactable{
 
     public void fire() {
         if (count >= RELOAD_TIME) {
-            bulletControllerManager.add(new BulletController(
-                    new Bullet(gameObject.getX() + ((gameObject.getWidth() - Bullet.BULLET_WIDTH) / 2), gameObject.getY() - Bullet.BULLET_HEIGHT),
-                    new GameView(Utils.loadImageFromRes("bullet.png"))
-            ));
+            GameObject bulletObject = null;
+            Image imageBullet = null;
+
+            switch (planeShootingType) {
+                case SINGLE:
+                    bulletObject = new BulletSingle(gameObject.getX() + ((gameObject.getWidth() - BulletSingle.bullet_width) / 2), gameObject.getY() - BulletSingle.bullet_height);
+                    imageBullet = Utils.loadImageFromRes("bullet.png");
+                    break;
+                case DOUBLE:
+                    bulletObject = new BulletDouble(gameObject.getX() + ((gameObject.getWidth() - BulletDouble.bullet_width) / 2), gameObject.getY() - BulletSingle.bullet_height);
+                    imageBullet = Utils.loadImageFromRes("double_bullet.png");
+                    break;
+            }
+            bulletControllerManager.add(new BulletController(bulletObject, new GameView(imageBullet)));
             count = 0;
         }
     }
@@ -121,9 +133,21 @@ public class PlaneController extends SingleController implements Contactable{
         if (contactable instanceof EnemyBulletController) {
             ((EnemyBulletController) contactable).destroy();
         }
+        if (contactable instanceof GiftController) {
+            ((GiftController) contactable).destroy();
+        }
     }
 
     public void printHP() {
-        System.out.println("HP left : " + gameObject.getHp());
+        System.out.println("HP left : " + ((Plane)gameObject).getHp());
     }
+
+    public void getHit(int damage) {
+        ((Plane)gameObject).getHit(damage);
+    }
+
+    public void setPlaneShootingType(PlaneShootingType planeShootingType) {
+        this.planeShootingType = planeShootingType;
+    }
+
 }
