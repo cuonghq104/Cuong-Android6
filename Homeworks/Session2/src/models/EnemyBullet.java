@@ -13,8 +13,6 @@ public class EnemyBullet extends GameObject{
     public static final int BULLET_WIDTH = 32;
     public static final int BULLET_HEIGHT = 32;
 
-    public static final int HP = 1;
-
     ArrayList<EnemyBulletController> arrayList;
 
     public EnemyBullet(int x, int y) {

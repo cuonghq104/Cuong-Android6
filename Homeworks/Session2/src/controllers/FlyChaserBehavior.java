@@ -39,15 +39,11 @@ public class FlyChaserBehavior implements FlyBehavior{
     public void doFly(GameObject gameObject) {
         if (!leftSide && !upSide) {
             gameObject.move(speed, Math.abs(ratio) * speed);
-            System.out.println("RIGHT - DOWN");
         }else if (leftSide && !upSide) {
             gameObject.move(-speed, Math.abs(ratio) * speed);
-            System.out.println("LEFT - DOWN");
         }else if (!leftSide && upSide) {
-            System.out.println("RIGHT - UP");
             gameObject.move(speed, -Math.abs(ratio) * speed);
         } else {
-            System.out.println("LEFT - UP");
             gameObject.move(-speed, -Math.abs(ratio) * speed);
         }
     }

@@ -172,10 +172,10 @@ public class GameWindow extends Frame implements Runnable{
     }
 
 
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-    }
+//    @Override
+//    public void paint(Graphics g) {
+//        super.paint(g);
+//    }
 
     @Override
     public void update(Graphics g) {
