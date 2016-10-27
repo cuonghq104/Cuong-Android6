@@ -1,8 +1,10 @@
 package controllers;
 
+import controllers.managers.CollisionPool;
+import controllers.managers.ControllerManager;
 import models.*;
 import utils.Utils;
-import views.GameView;
+import views.SingleDrawer;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -20,16 +22,15 @@ public class PlaneController extends SingleController implements Contactable{
 
     private ControllerManager bulletControllerManager;
 
-    private BulletController bulletController;
+//    private PlaneShootingType planeShootingType;
 
-    private PlaneShootingType planeShootingType;
+    private ShootingStyle shootingStyle;
 
-    public PlaneController(Plane gameObject, GameView gameView) {
-//        planeShootingType = new Pl
-        super(gameObject, gameView);
+    public PlaneController(Plane gameObject, SingleDrawer singleDrawer) {
+        super(gameObject, singleDrawer);
         bulletControllerManager = new ControllerManager();
         CollisionPool.instance.register(this);
-//        bulletController = new BulletController()
+        shootingStyle = ShootingStyle.SINGLE_BULLET;
     }
 
     public ControllerManager getBulletControllerManager() {
@@ -102,31 +103,33 @@ public class PlaneController extends SingleController implements Contactable{
         if (count >= RELOAD_TIME) {
             GameObject bulletObject = null;
             Image imageBullet = null;
-
-            switch (planeShootingType) {
-                case SINGLE:
-                    bulletObject = new BulletSingle(gameObject.getX() + ((gameObject.getWidth() - BulletSingle.bullet_width) / 2), gameObject.getY() - BulletSingle.bullet_height);
-                    imageBullet = Utils.loadImageFromRes("bullet.png");
+            int x = 0;
+            int y = 0;
+            switch (shootingStyle) {
+                case SINGLE_BULLET:
+                    x = gameObject.getX() + ((gameObject.getWidth() - BulletSingle.bullet_width) / 2);
+                    y = gameObject.getY() - BulletSingle.bullet_height;
                     break;
-                case DOUBLE:
-                    bulletObject = new BulletDouble(gameObject.getX() + ((gameObject.getWidth() - BulletDouble.bullet_width) / 2), gameObject.getY() - BulletSingle.bullet_height);
-                    imageBullet = Utils.loadImageFromRes("double_bullet.png");
-                    break;
+                case DOUBLE_BULLET:
+                    x = gameObject.getX() + ((gameObject.getWidth() - BulletDouble.bullet_width) / 2);
+                    y = gameObject.getY() - BulletSingle.bullet_height;
             }
-            bulletControllerManager.add(new BulletController(bulletObject, new GameView(imageBullet)));
+            bulletControllerManager.add(BulletController.create(x, y, shootingStyle));
             count = 0;
         }
     }
 
-    public static final PlaneController planeController = new PlaneController(
-        new Plane(GameConfig.instance.getScreenWidth() / 2, GameConfig.instance.getScreenHeight() - 100),
-        new GameView(Utils.loadImageFromRes("plane3.png"))
-    );
+    public static  PlaneController create(int x, int y, String res) {
+        return new PlaneController(
+                new Plane(x, y),
+                new SingleDrawer(Utils.loadImageFromRes(res))
+        );
+    }
 
-    public static final PlaneController planeControllerMouse = new PlaneController(
-        new Plane(GameConfig.instance.getScreenWidth() / 2, GameConfig.instance.getScreenHeight() - 200),
-        new GameView(Utils.loadImageFromRes("plane4.png"))
-    );
+//    public static final PlaneController planeControllerMouse = new PlaneController(
+//        new Plane(GameConfig.instance.getScreenWidth() / 2, GameConfig.instance.getScreenHeight() - 200),
+//        new SingleDrawer(Utils.loadImageFromRes("plane4.png"))
+//    );
 
     @Override
     public void onCollide(Contactable contactable) {
@@ -144,10 +147,13 @@ public class PlaneController extends SingleController implements Contactable{
 
     public void getHit(int damage) {
         ((Plane)gameObject).getHit(damage);
+        if (((Plane) gameObject).getHp() == 0) {
+            this.destroy();
+            ExplosionController.create(gameObject.getX(), gameObject.getY());
+        }
     }
 
-    public void setPlaneShootingType(PlaneShootingType planeShootingType) {
-        this.planeShootingType = planeShootingType;
+    public void setShootingStyle(ShootingStyle shootingStyle) {
+        this.shootingStyle = shootingStyle;
     }
-
 }

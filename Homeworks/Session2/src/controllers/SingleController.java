@@ -2,7 +2,7 @@ package controllers;
 
 import models.GameConfig;
 import models.GameObject;
-import views.GameView;
+import views.GameDrawer;
 
 import java.awt.*;
 
@@ -15,7 +15,7 @@ public class SingleController implements BaseController{
 
     protected int dy;
 
-    protected GameView gameView;
+    protected GameDrawer gameDrawer;
 
     protected GameObject gameObject;
 
@@ -24,11 +24,11 @@ public class SingleController implements BaseController{
     }
 
     public void draw(Graphics graphics) {
-            gameView.drawImage(graphics, gameObject);
+            gameDrawer.drawImage(graphics, gameObject);
     }
 
-    public SingleController(GameObject gameObject, GameView gameView) {
-        this.gameView = gameView;
+    public SingleController(GameObject gameObject, GameDrawer gameDrawer) {
+        this.gameDrawer = gameDrawer;
         this.gameObject = gameObject;
     }
 

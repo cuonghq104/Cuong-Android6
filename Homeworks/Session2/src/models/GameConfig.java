@@ -7,7 +7,7 @@ package models;
  */
 public class GameConfig {
     private final static int DEFAULT_DELAY = 17;
-    private static final int DEFAULT_WIDTH = 300;
+    private static final int DEFAULT_WIDTH = 600;
     private static final int DEFAULT_HEIGHT = 600;
 
     private int threadDelayInMilliseconds = 17;

@@ -1,12 +1,10 @@
 package controllers;
 
+import controllers.managers.CollisionPool;
 import models.EnemyBullet;
 import models.GameConfig;
-import models.GameObject;
-import models.Plane;
 import utils.Utils;
-import views.EnemyBulletView;
-import views.GameView;
+import views.SingleDrawer;
 
 import java.awt.*;
 
@@ -19,14 +17,14 @@ public class EnemyBulletController extends SingleController implements Contactab
 
     private FlyBehavior flyBehavior;
 
-    public EnemyBulletController(EnemyBullet gameObject, GameView gameView, FlyBehavior flyBehavior) {
-        super(gameObject, gameView);
+    public EnemyBulletController(EnemyBullet gameObject, SingleDrawer singleDrawer, FlyBehavior flyBehavior) {
+        super(gameObject, singleDrawer);
         this.flyBehavior = flyBehavior;
         CollisionPool.instance.register(this);
     }
 
     public void draw(Graphics g) {
-        gameView.drawImage(g, gameObject);
+        gameDrawer.drawImage(g, gameObject);
     }
 
     public void run() {
@@ -43,15 +41,17 @@ public class EnemyBulletController extends SingleController implements Contactab
     @Override
     public void onCollide(Contactable contactable) {
         if (contactable instanceof PlaneController) {
+            Utils.playSound("resources/Hit_Hurt8.wav", false);
             ((PlaneController) contactable).getHit(1);
             ((PlaneController) contactable).printHP();
+
         }
     }
 
     public static EnemyBulletController create(int x, int y, FlyBehavior flyBehavior) {
         EnemyBulletController enemyBulletController = new EnemyBulletController(
                 new EnemyBullet(x, y),
-                new GameView(Utils.loadImageFromRes("enemy_bullet.png")),
+                new SingleDrawer(Utils.loadImageFromRes("enemy_bullet.png")),
                 flyBehavior
         );
         return enemyBulletController;

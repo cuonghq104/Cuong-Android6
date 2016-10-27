@@ -7,7 +7,7 @@ import java.awt.*;
 /**
  * Created by Cuong on 10/20/2016.
  */
-public class GiftView extends GameView{
+public class GiftView extends SingleDrawer {
 
 
     public GiftView(Image image) {

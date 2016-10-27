@@ -1,15 +1,20 @@
 package controllers;
 
+import controllers.managers.CollisionPool;
+import controllers.managers.ControllerManager;
+import controllers.managers.EnemyBulletControlManager;
+import controllers.managers.NotificationCenter;
 import models.*;
 import utils.Utils;
-import views.GameView;
+import views.AnimationDrawer;
+import views.GameDrawer;
 
 import java.awt.*;
 
 /**
  * Created by Cuong on 10/10/2016.
  */
-public class EnemyPlaneController extends SingleController implements Contactable{
+public class EnemyPlaneController extends SingleController implements Contactable, Subscriber{
 
 
     EnemyBulletControlManager enemyBulletControlManager;
@@ -24,13 +29,14 @@ public class EnemyPlaneController extends SingleController implements Contactabl
 
     private ShootBehavior shootBehavior;
 
-    public EnemyPlaneController(GameObject gameObject, GameView gameView, FlyBehavior flyBehavior, ShootBehavior shootBehavior) {
-        super(gameObject, gameView);
+    public EnemyPlaneController(GameObject gameObject, GameDrawer gameDrawer, FlyBehavior flyBehavior, ShootBehavior shootBehavior) {
+        super(gameObject, gameDrawer);
         counter = RELOAD_TIME;
         enemyBulletControlManager = new EnemyBulletControlManager();
         CollisionPool.instance.register(this);
         this.flyBehavior = flyBehavior;
         this.shootBehavior = shootBehavior;
+        NotificationCenter.instance.register(this);
     }
 
 
@@ -67,7 +73,7 @@ public class EnemyPlaneController extends SingleController implements Contactabl
     }
 
     public void draw(Graphics g) {
-        gameView.drawImage(g, gameObject);
+        gameDrawer.drawImage(g, gameObject);
         enemyBulletControlManager.draw(g);
     }
 
@@ -81,38 +87,62 @@ public class EnemyPlaneController extends SingleController implements Contactabl
     }
 
     public static EnemyPlaneController create(int x, int y, EnemyPlaneType enemyPlaneType) {
-        Image image = null;
+//        Image image = null;
+        AnimationDrawer animationDrawer = null;
+
         FlyBehavior flyBehavior = null;
         ShootBehavior shootBehavior = null;
 
         switch(enemyPlaneType) {
             case BLACK:
-                image = Utils.loadImageFromRes("plane1.png");
-                flyBehavior = new FlyDownBehavior(1);
-                shootBehavior = new ShootDownBehavior();
-                break;
-            case WHITE:
-                image = Utils.loadImageFromRes("enemy_plane_white_2.png");
+//                image = Utils.loadImageFromRes("plane1.png");
+//                flyBehavior = new FlyDownBehavior(1);
+//                shootBehavior = new ShootDownBehavior();
+//                break;
+            case RED:
+                String[] arrName = {"red_1.png", "red_2.png", "red_3.png"};
+                animationDrawer = new AnimationDrawer(arrName);
                 flyBehavior = new FlyDownRightBehavior(1);
                 shootBehavior = new ShootDownRightBehavior();
                 break;
+            case GREEN:
+                arrName = new String[]{"enemy4_1.png", "enemy4_2.png", "enemy4_3.png"};
+                animationDrawer = new AnimationDrawer(arrName);
+                flyBehavior = new FlyDownBehavior(1);
+                shootBehavior = new ShootDownBehavior();
+                break;
             case YELLOW:
-                image = Utils.loadImageFromRes("enemy_plane_yellow_1.png");
+//                image = Utils.loadImageFromRes("enemy_plane_yellow_1.png");
+                arrName = new String[]{"enemy_plane_yellow_1.png", "enemy_plane_yellow_2.png", "enemy_plane_yellow_3.png"};
+                animationDrawer = new AnimationDrawer(arrName);
                 flyBehavior = new FlyDownLeftBehavior(1);
                 shootBehavior = new ShootDownLeftBehavior();
-                break;
-            case GREEN:
-                image = Utils.loadImageFromRes("enemy_plane_green.png");
-                flyBehavior = new FlyDownBehavior(1);
-                shootBehavior = new ShootChaserBehavior();
-                break;
         }
         return new EnemyPlaneController(
                 new Enemy(x, y),
-                new GameView(image),
+                animationDrawer,
                 flyBehavior,
                 shootBehavior);
     }
 
+    private static final int DAMAGE_RADIUS = 200;
 
+    @Override
+    public void onEvent(EventType eventType, SingleController singleController) {
+        if (eventType == EventType.BOMB_EXPLOSE) {
+            GameObject gameObject = singleController.getGameObject();
+            double distance = Utils.distance(this.gameObject, gameObject);
+            if (distance < DAMAGE_RADIUS) {
+                this.destroy();
+            }
+        }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        ExplosionController explosionController = ExplosionController.create(gameObject.getX(), gameObject.getY());
+        ControllerManager.explosionManager.add(explosionController);
+        NotificationCenter.instance.unregister(this);
+    }
 }

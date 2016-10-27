@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.managers.EnemyBulletControlManager;
 import models.GameObject;
 
 /**

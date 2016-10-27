@@ -5,7 +5,7 @@ package controllers;
  */
 public enum EnemyPlaneType {
     BLACK,  // 0
-    WHITE,  // 1
+    RED,  // 1
     YELLOW, // 2
     GREEN
 }
