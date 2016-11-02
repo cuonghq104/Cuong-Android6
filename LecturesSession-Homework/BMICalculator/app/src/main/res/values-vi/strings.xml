@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BMICalculator</string>
+    <string name="weight">Cân nặng :</string>
+    <string name="height">Chiều cao : </string>
+    <string name="severelyUnderweight">Thiếu cân nghiêm trọng</string>
+    <string name="underweight">Thiếu cân</string>
+    <string name="kg">kg</string>
+    <string name="cm">cm</string>
+    <string name="normal">Bình thường</string>
+    <string name="overweight">Thừa cân</string>
+    <string name="obese">Béo phì</string>
+</resources>
