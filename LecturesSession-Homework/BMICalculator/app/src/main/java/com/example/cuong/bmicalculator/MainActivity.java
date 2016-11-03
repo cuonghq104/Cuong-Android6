@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        etHeight.setText(getString(R.string.cm));
-        etWeight.setText(getString(R.string.kg));
+        etHeight.setHint(getString(R.string.cm));
+        etWeight.setHint(getString(R.string.kg));
     }
 
     private void addListener() {
