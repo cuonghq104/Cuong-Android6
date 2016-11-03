@@ -9,4 +9,7 @@
     <string name="normal">Normal</string>
     <string name="overweight">Overweight</string>
     <string name="obese">Obese</string>
+    <string name="again">Again</string>
+    <string name="calculate">Calculate</string>
+    <string name="openingResult">Your BMI is : </string>
 </resources>

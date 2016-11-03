@@ -10,4 +10,7 @@
     <string name="normal">Bình thường</string>
     <string name="overweight">Thừa cân</string>
     <string name="obese">Béo phì</string>
+    <string name="again">Tính lại</string>
+    <string name="calculate">Tính</string>
+    <string name="openingResult">Chỉ số BMI của bạn là : </string>
 </resources>

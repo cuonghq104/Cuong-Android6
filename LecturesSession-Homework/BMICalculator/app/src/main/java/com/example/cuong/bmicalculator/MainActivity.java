@@ -66,22 +66,23 @@ public class MainActivity extends AppCompatActivity {
                         double heightByMeters = ((double) height) / 100;
 
                         double bmiCalculatingResult = ((double) weight) / (heightByMeters * heightByMeters);
-                        String result = "";
+                        String result = getString(R.string.openingResult);
+                        result += (" " + ((double)Math.round(bmiCalculatingResult * 100) / 100) + ", ");
                         if (bmiCalculatingResult < 16) {
-                            result = getString(R.string.severelyUnderweight);
+                            result += getString(R.string.severelyUnderweight);
                         } else if (bmiCalculatingResult < 18.5) {
-                            result = getString(R.string.underweight);
+                            result += getString(R.string.underweight);
                         } else if (bmiCalculatingResult < 25) {
-                            result = getString(R.string.normal);
+                            result += getString(R.string.normal);
                         } else if (bmiCalculatingResult < 30) {
-                            result = getString(R.string.overweight);
+                            result += getString(R.string.overweight);
                         } else {
-                            result = getString(R.string.obese);
+                            result += getString(R.string.obese);
                         }
                         tvResult.setText(result);
                         etWeight.setEnabled(false);
                         etHeight.setEnabled(false);
-                        btCalculate.setText("Again");
+                        btCalculate.setText(getText(R.string.again));
                         isShowingResult = true;
                     } catch (NumberFormatException e) {
                         Log.d(TAG, e.getLocalizedMessage());
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     etWeight.setEnabled(true);
                     etHeight.setEnabled(true);
-                    btCalculate.setText("Calculate");
+                    btCalculate.setText(getText(R.string.calculate));
                     tvResult.setText("");
                     isShowingResult = false;
                 }
