@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.cuong.commonviews.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgv_world"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:scaleType="fitCenter"
+            android:background="#0000AA"/>
+
+        <CheckBox
+            android:id="@+id/cb_verify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Under 20"/>
+
+        <Button
+            android:id="@+id/bt_simple"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tap me"
+            android:paddingRight="50dp"
+            android:paddingLeft="50dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="#0000AA"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/jobs"/>
+
+            <Spinner
+                android:id="@+id/spn_career"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </Spinner>
+        </LinearLayout>
+    <RadioGroup
+        android:id="@+id/rdgr_continent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:layout_marginTop="20dp"
+            android:id="@+id/rdbt_asia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Asia"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/rdbt_europe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Europe"
+            android:checked="false"/>
+
+        <RadioButton
+            android:id="@+id/rdbt_africa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Africa"
+            android:checked="false"/>
+
+        <RadioButton
+            android:id="@+id/rdbt_america"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="America"
+            android:checked="false"/>
+
+
+        <RadioButton
+            android:id="@+id/rdbt_australia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Australia"
+            android:checked="false"/>
+    </RadioGroup>
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#0000AA" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RatingBar
+                android:id="@+id/rtbr_enjoy_life"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="0.5"/>
+            <TextView
+                android:layout_marginTop="10dp"
+                android:id="@+id/txtv_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <SeekBar
+                android:layout_marginTop="20dp"
+                android:id="@+id/skbr_salary"
+                android:max="100"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtv_salary"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <SearchView
+            android:id="@+id/sv_simple"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</ScrollView>
