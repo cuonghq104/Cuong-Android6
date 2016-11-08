@@ -26,58 +26,72 @@ public class MainActivity extends AppCompatActivity {
 
     int timeLeft;
 
+    private boolean isStop = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getReference();
         if (savedInstanceState != null) {
-            Log.d(TAG, "savedInstanceState : !Null");
             timeLeft = savedInstanceState.getInt("TIME_LEFT");
 
             countDownTimer = new CountDownTimer(timeLeft, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     long secondsUntilsFinished = millisUntilFinished / 1000;
-                    txtvTime.setText(String.format("%d : %d", secondsUntilsFinished / 60, secondsUntilsFinished % 60) );
+                    txtvTime.setText(String.format("%02d : %02d", secondsUntilsFinished / 60, secondsUntilsFinished % 60) );
                     timeLeft-=1000;
+                    isStop = false;
                 }
 
                 @Override
                 public void onFinish() {
                     txtvTime.setText("BANG");
+                    timeLeft = 0;
+                    countDownTimer = null;
+                    isStop = true;
                 }
             }.start();
-        } else {
-            Log.d(TAG, "savedInstanceState : Null");
         }
         setupUI();
         addListener();
     }
 
     private void addListener() {
-//        int time = 0;
 
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int min = Integer.parseInt(edtMin.getText().toString());
-                int sec = Integer.parseInt(edtSec.getText().toString());
-                int time = min * 60 + sec;
-                time = time * 1000;
-                timeLeft = time;
-                countDownTimer = new CountDownTimer(time, 1000) {
-
-                    public void onTick(long millisUntilFinished) {
-                        long secondsUntilsFinished = millisUntilFinished / 1000;
-                        txtvTime.setText(String.format("%d : %d", secondsUntilsFinished / 60, secondsUntilsFinished % 60) );
-                        timeLeft-=1000;
+                if (isStop) {
+                    int time = 0;
+                    if (timeLeft != 0) {
+                        time = timeLeft;
+                    } else {
+                        int min = Integer.parseInt(edtMin.getText().toString());
+                        int sec = Integer.parseInt(edtSec.getText().toString());
+                        time = min * 60 + sec;
+                        time = time * 1000;
+                        timeLeft = time;
                     }
+                    countDownTimer = new CountDownTimer(time, 1000) {
 
-                    public void onFinish() {
-                        txtvTime.setText("BANG");
-                    }
-                }.start();
+                        public void onTick(long millisUntilFinished) {
+                            long secondsUntilsFinished = millisUntilFinished / 1000;
+                            txtvTime.setText(String.format("%02d : %02d", secondsUntilsFinished / 60, secondsUntilsFinished % 60));
+                            timeLeft -= 1000;
+                            isStop = false;
+                        }
+
+                        public void onFinish() {
+                            txtvTime.setText("BANG");
+                            timeLeft = 0;
+                            countDownTimer = null;
+                            isStop = true;
+                        }
+
+                    }.start();
+                }
             }
         });
 
@@ -85,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 countDownTimer.cancel();
+                isStop = true;
             }
         });
     }
