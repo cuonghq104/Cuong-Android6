@@ -26,13 +26,13 @@ public class NoteDetail extends BaseActivity implements OnNoteUpdateListener{
             if (position != -1) {
                 Note note = MainActivity.getNote(position);
                 DetailFragment detailFragment = DetailFragment.create(note, operation);
-
+                detailFragment.setOnNoteUpdateListener(NoteDetail.this);
                 changeFragment(R.id.fl_detail, detailFragment, false);
 
             }
         } else {
             DetailFragment detailFragment = DetailFragment.create(new Note(""), operation);
-
+            detailFragment.setOnNoteUpdateListener(NoteDetail.this);
             changeFragment(R.id.fl_detail, detailFragment, false);
         }
     }

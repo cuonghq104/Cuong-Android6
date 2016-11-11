@@ -112,6 +112,6 @@ public class MainActivity extends BaseActivity implements OnNoteUpdateListener{
 
     @Override
     public void onUpdate() {
-
+//        finish();
     }
 }
