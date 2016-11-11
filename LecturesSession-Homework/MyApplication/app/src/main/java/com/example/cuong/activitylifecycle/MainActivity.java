@@ -11,7 +11,6 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.toString();
-    private TextView txtvActivityName;
 
     private TextView txtvOnCreate;
 
@@ -91,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getReference() {
-        txtvActivityName = (TextView) findViewById(R.id.txtv_activity1);
         txtvOnCreate = (TextView) findViewById(R.id.txtv_on_create_act2);
         txtvOnStart = (TextView) findViewById(R.id.txtv_on_start_act2);
         txtvOnResume = (TextView) findViewById(R.id.txtv_on_resume_act2);
