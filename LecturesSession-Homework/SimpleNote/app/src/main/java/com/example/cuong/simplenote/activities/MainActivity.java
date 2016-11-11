@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity implements OnNoteUpdateListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getReferrence();
+        getReference();
         setupUI();
         addListener();
     }
@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity implements OnNoteUpdateListener{
         });
     }
 
-    private void getReferrence() {
+    private void getReference() {
         btnAdd = (Button) findViewById(R.id.btn_add);
         lvNote = (ListView) findViewById(R.id.lv_note);
     }

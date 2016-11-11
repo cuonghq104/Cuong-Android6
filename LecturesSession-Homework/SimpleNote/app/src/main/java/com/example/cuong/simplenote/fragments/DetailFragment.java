@@ -89,18 +89,12 @@ public class DetailFragment extends Fragment {
     }
 
     private void setUpUI() {
-//        etNote.setHint("<Text here>");
-//        Intent intent = getIntent();
-//        operation = intent.getIntExtra(Note.OPERATION_KEY, -1);
         if (operation == Note.OP_UPDATE) {
             btnSave.setText("UPDATE");
-//            position = intent.getIntExtra(MainActivity.POSITION, -1);
-//            if (position != -1) {
-//                Note note = MainActivity.getNote(position);
-                etNote.setText(note.getContent());
-//            }
+            etNote.setText(note.getContent());
         } else {
             btnSave.setText("CREATE");
+            etNote.setHint("<Text here>");
             etNote.setText("");
         }
 

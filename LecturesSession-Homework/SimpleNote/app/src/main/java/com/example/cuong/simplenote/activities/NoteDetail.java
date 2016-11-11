@@ -19,9 +19,6 @@ public class NoteDetail extends BaseActivity implements OnNoteUpdateListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_detail);
-//        getReference();
-//        setUpUI();
-//        addListener();
         Intent intent = getIntent();
         int operation = intent.getIntExtra(Note.OPERATION_KEY, -1);
         if (operation == Note.OP_UPDATE) {
@@ -44,51 +41,5 @@ public class NoteDetail extends BaseActivity implements OnNoteUpdateListener{
     public void onUpdate() {
         finish();
     }
-
-
-//    private void getReference() {
-//        etNote = (EditText) findViewById(R.id.et_note);
-//        btnSave = (Button) findViewById(R.id.btn_save);
-//    }
-
-//    private void setUpUI() {
-//        etNote.setHint("<Text here>");
-//        Intent intent = getIntent();
-//        operation = intent.getIntExtra(Note.OPERATION_KEY, -1);
-//        if (operation == Note.OP_UPDATE) {
-//            btnSave.setText("UPDATE");
-//            position = intent.getIntExtra(MainActivity.POSITION, -1);
-//            if (position != -1) {
-//                Note note = MainActivity.getNote(position);
-//                etNote.setText(note.getContent());
-//            }
-//        } else {
-//            btnSave.setText("CREATE");
-//            etNote.setText("");
-//        }
-//
-//    }
-
-//    private void addListener() {
-//        btnSave.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (operation == Note.OP_UPDATE) {
-//                    Note note = new Note(etNote.getText().toString());
-//                    MainActivity.updateNote(position, note);
-//                    MainActivity.notifyDataSetChanged();
-//                    finish();
-//                }
-//                else {
-//                    if (!etNote.getText().toString().matches("")) {
-//                        MainActivity.addNewNote(new Note(etNote.getText().toString()));
-//                        MainActivity.notifyDataSetChanged();
-//                        finish();
-//                    }
-//                }
-//            }
-//        });
-//    }
-
 
 }
