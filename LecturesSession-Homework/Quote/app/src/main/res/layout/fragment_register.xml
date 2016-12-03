@@ -1,0 +1,43 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="hq.cuong.quote.RegisterFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:textColor="@color/indigo5"
+            android:id="@+id/et_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/et_name_min_width"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/indogo6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/et_username"
+            android:text="@string/greeting"
+            android:layout_centerHorizontal="true"/>
+
+        <Button
+            android:id="@+id/bt_continue"
+            android:paddingLeft="@dimen/bt_padding"
+            android:paddingRight="@dimen/bt_padding"
+            android:textColor="@color/white"
+            android:background="@color/indigo8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Let's move on"
+            android:layout_below="@id/et_username"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+
+</FrameLayout>
