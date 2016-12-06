@@ -1,0 +1,32 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.ImageFragment"
+    android:background="@color/green"
+    android:padding="@dimen/frame_layout_padding">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_company_name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/company_name_detail_text_size"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/company_name"/>
+
+    <ImageView
+        android:layout_marginTop="@dimen/fragment_image_margin_top"
+        android:id="@+id/iv_company_picture"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:scaleType="fitXY"/>
+    </LinearLayout>
+
+</FrameLayout>

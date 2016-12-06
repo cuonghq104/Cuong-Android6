@@ -7,7 +7,7 @@ import com.example.cuong.simpledictionary.managers.DbHelper;
 /**
  * Created by Cuong on 11/18/2016.
  */
-public class DictionaryApplication extends Application{
+public class    DictionaryApplication extends Application{
 
     @Override
     public void onCreate() {

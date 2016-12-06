@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void selectRandomWord() {
-//        Log.d(TAG, String.format("RANDOM : %s", dbHelper.selectRandomWord().toString()));
+        Log.d(TAG, String.format("RANDOM : %s", dbHelper.selectRandomWord().toString()));
     }
 
     private void updateWord() {

@@ -1,0 +1,51 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.CompanyDetailFragment"
+    android:padding="@dimen/company_detail_fragment_padding">
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:text="@string/company_name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/company_name_detail_text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_website"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_below="@id/tv_name"
+            android:text="@string/website"
+            android:layout_marginTop="@dimen/detail_fragment_textview_margin_top"
+            android:textStyle="italic"/>
+
+        <TextView
+            android:id="@+id/tv_phone"
+            android:textSize="@dimen/detail_fragment_phone_text_size"
+            android:layout_marginTop="@dimen/detail_fragment_textview_margin_top"
+            android:textColor="@color/black"
+            android:layout_below="@id/tv_website"
+            android:text="@string/phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/iv_company_picture_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/tv_phone"
+            android:layout_marginTop="@dimen/detail_fragment_textview_margin_top"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/company_image"/>
+    </RelativeLayout>
+
+</FrameLayout>

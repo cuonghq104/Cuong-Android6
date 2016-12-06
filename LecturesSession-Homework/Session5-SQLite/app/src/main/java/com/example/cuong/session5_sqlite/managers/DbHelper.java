@@ -74,7 +74,6 @@ public class DbHelper extends SQLiteAssetHelper{
 
     public Note selectRandomNote() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Random r = new Random();
         Cursor cursor = db.query(NOTE_TABLE_NAME, NOTE_COLUMNS, null, null, null, null, "RANDOM()");
         String title = cursor.getString(cursor.getColumnIndex(NOTE_TITLE_COLUMN));
         int id = cursor.getInt(cursor.getColumnIndex(NOTE_ID_COLUMN));

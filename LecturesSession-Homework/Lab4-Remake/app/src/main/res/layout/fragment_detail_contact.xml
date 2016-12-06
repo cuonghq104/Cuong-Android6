@@ -1,0 +1,40 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="hq.cuong.lab4_remake.DetailContactFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="@dimen/text_size"
+        android:textColor="@color/black"
+        android:text="@string/name"
+        android:id="@+id/tv_company_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textStyle="italic"
+        android:layout_below="@id/tv_company_name"
+        android:id="@+id/tv_website"
+        android:textColor="@color/colorPrimary"
+        android:text="@string/website"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="@dimen/text_size"
+        android:layout_below="@id/tv_website"
+        android:textColor="@color/black"
+        android:text="@string/phone"
+        android:id="@+id/tv_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
+
+
+</FrameLayout>
