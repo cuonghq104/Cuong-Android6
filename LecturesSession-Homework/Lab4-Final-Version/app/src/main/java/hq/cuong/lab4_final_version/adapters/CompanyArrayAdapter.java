@@ -1,6 +1,7 @@
 package hq.cuong.lab4_final_version.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,9 @@ import hq.cuong.lab4_final_version.models.Item;
  * Created by Cuong on 12/5/2016.
  */
 public class CompanyArrayAdapter extends ArrayAdapter<Item> {
+    private static final String TAG = CompanyArrayAdapter.class.toString();
+
+
     public CompanyArrayAdapter(Context context, int resource, List<Item> objects) {
         super(context, resource, objects);
     }
@@ -32,6 +36,7 @@ public class CompanyArrayAdapter extends ArrayAdapter<Item> {
 
         new CompanyItemHolder(convertView).setData(getContext(), getItem(position));
 
+        Log.d(TAG, String.format("Position %d", position));
         return convertView;
     }
 }
