@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import hq.cuong.upgradenote.R;
 import hq.cuong.upgradenote.models.Note;
+import hq.cuong.upgradenote.networks.jsonmodels.LabNote;
 import hq.cuong.upgradenote.viewholders.NoteViewHolder;
 
 /**
@@ -26,13 +27,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteViewHolder> {
 
     @Override
     public void onBindViewHolder(NoteViewHolder holder, int position) {
-        Note note = Note.getNotes().get(position);
 
-        holder.bind(note);
+        LabNote labNote = LabNote.getLabNotes().get(position);
+
+        holder.bind(labNote);
     }
 
     @Override
     public int getItemCount() {
-        return Note.getNotes().size();
+        return LabNote.getLabNotes().size();
     }
 }

@@ -6,4 +6,9 @@
     <string name="title">Title</string>
     <string name="noteColor">Color</string>
     <string name="save">Save</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="user_already_exists">User already exists</string>
 </resources>

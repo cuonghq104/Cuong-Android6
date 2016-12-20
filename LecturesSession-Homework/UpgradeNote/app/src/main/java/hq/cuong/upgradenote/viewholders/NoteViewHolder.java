@@ -1,15 +1,18 @@
 package hq.cuong.upgradenote.viewholders;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import hq.cuong.upgradenote.R;
 import hq.cuong.upgradenote.models.Note;
+import hq.cuong.upgradenote.networks.jsonmodels.LabNote;
 
 /**
  * Created by Cuong on 12/16/2016.
@@ -31,29 +34,10 @@ public class NoteViewHolder extends RecyclerView.ViewHolder{
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(Note note) {
+    public void bind(LabNote note) {
         tvTitle.setText(note.getTitle());
         tvContent.setText(note.getContent());
-        int color = note.getColor();
-        switch (color) {
-            case 0:
-                llContainer.setBackgroundResource(R.color.red);
-                break;
-            case 1:
-                llContainer.setBackgroundResource(R.color.green);
-                break;
-            case 2:
-                llContainer.setBackgroundResource(R.color.blue);
-                break;
-            case 3:
-                llContainer.setBackgroundResource(R.color.yellow);
-                break;
-            case 4:
-                llContainer.setBackgroundResource(R.color.gray);
-                break;
-            case 5:
-                llContainer.setBackgroundResource(R.color.purple);
-                break;
-        }
+
+        llContainer.setBackgroundColor(Color.parseColor(note.getColor()));
     }
 }

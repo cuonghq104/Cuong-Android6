@@ -4,7 +4,8 @@ import android.app.Application;
 
 import java.util.ArrayList;
 
-import hq.cuong.upgradenote.databases.DbContext;
+//import hq.cuong.upgradenote.databases.DbContext;
+import hq.cuong.upgradenote.managers.Preferences;
 import hq.cuong.upgradenote.models.Note;
 
 /**
@@ -15,10 +16,11 @@ public class NoteApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        DbContext.init(this);
+//        DbContext.init(this);
 //        Note.setNotes((ArrayList<Note>) DbContext.getInstance().getAllNote());
-        for (Note note : DbContext.getInstance().getAllNote()) {
-            Note.add(note);
-        }
+//        for (Note note : DbContext.getInstance().getAllNote()) {
+//            Note.add(note);
+//        }
+        Preferences.init(this);
     }
 }

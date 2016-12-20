@@ -9,9 +9,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import hq.cuong.upgradenote.events.ChangeFragmentEvent;
+import hq.cuong.upgradenote.fragments.LoginAndRegisterFragment;
 import hq.cuong.upgradenote.fragments.NewNoteFragment;
 import hq.cuong.upgradenote.R;
 import hq.cuong.upgradenote.fragments.NoteListFragment;
+import hq.cuong.upgradenote.managers.Preferences;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,7 +23,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         EventBus.getDefault().register(this);
-        changeFragment(new NoteListFragment(), false);
+        if (Preferences.getInstance().getToken() == null) {
+            changeFragment(new LoginAndRegisterFragment(), false);
+        } else {
+            changeFragment(new NoteListFragment(), false);
+        }
     }
 
     public void changeFragment(Fragment fragment, boolean isAddToBackStack) {

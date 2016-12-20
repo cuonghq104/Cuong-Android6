@@ -17,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hq.cuong.upgradenote.R;
-import hq.cuong.upgradenote.databases.DbContext;
+//import hq.cuong.upgradenote.databases.DbContext;
 import hq.cuong.upgradenote.events.ChangeFragmentEvent;
 import hq.cuong.upgradenote.models.Note;
 import hq.cuong.upgradenote.models.NoteColor;
@@ -68,7 +68,8 @@ public class NewNoteFragment extends Fragment {
         Note note = Note.createNote(title, content, color);
 
         Note.add(note);
-        DbContext.getInstance().insert(note);
+//        DbContext.getInstance().insert(note);
         EventBus.getDefault().post(new ChangeFragmentEvent(new NoteListFragment(), false));
     }
+
 }
