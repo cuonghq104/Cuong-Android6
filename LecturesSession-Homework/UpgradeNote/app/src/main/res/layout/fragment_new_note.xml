@@ -2,70 +2,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="@dimen/new_note_fragment_padding"
     tools:context=".fragments.NewNoteFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/ll_tv"
+        <RelativeLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
-                android:layout_weight="5"
-                android:id="@+id/tv_title"
-                android:layout_width="0dp"
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:padding="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_title"
+                        android:text="@string/title"
+                        android:textColor="@color/black"/>
+
+                    <EditText
+                        android:id="@+id/et_title"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/black"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Content"
+                        android:textColor="@color/black"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:id="@+id/et_content"
+                        android:gravity="top"
+                        android:textColor="@color/black"/>
+
+                    <Button
+                        android:id="@+id/bt_color"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/noteColor"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.design.widget.FloatingActionButton
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/cv_container"
+                android:src="@drawable/save"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title"
-                android:textColor="@color/black"/>
+                android:id="@+id/bt_save"
+                app:fabSize="normal"/>
 
-            <TextView
-                android:layout_marginLeft="@dimen/spinner_margin_left"
-                android:layout_weight="3"
-                android:textColor="@color/black"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/noteColor"/>
-        </LinearLayout>
+        </RelativeLayout>
 
+    </ScrollView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ll_tv">
-
-            <EditText
-                android:id="@+id/et_title"
-                android:layout_weight="5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" />
-
-            <Spinner
-                android:layout_marginLeft="@dimen/spinner_margin_left"
-                android:id="@+id/sp_color"
-                android:layout_weight="3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent">
-
-            </Spinner>
-        </LinearLayout>
-
-        <EditText
-            android:gravity="top"
-            android:textColor="@color/black"
-            android:id="@+id/et_content"
-            android:layout_marginTop="@dimen/et_content_margin_top"
-            android:layout_width="match_parent"
-            android:layout_height="300dp" />
-
-        <Button
-            android:id="@+id/bt_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/save"/>
-    </LinearLayout>
 </FrameLayout>

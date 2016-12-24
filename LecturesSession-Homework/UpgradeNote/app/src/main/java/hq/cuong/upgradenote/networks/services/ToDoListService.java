@@ -5,8 +5,10 @@ import java.util.List;
 
 import hq.cuong.upgradenote.networks.jsonmodels.LabNote;
 import hq.cuong.upgradenote.networks.jsonmodels.ToDoResponseBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;

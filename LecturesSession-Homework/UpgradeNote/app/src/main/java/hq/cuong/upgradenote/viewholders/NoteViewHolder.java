@@ -37,7 +37,8 @@ public class NoteViewHolder extends RecyclerView.ViewHolder{
     public void bind(LabNote note) {
         tvTitle.setText(note.getTitle());
         tvContent.setText(note.getContent());
-
-        llContainer.setBackgroundColor(Color.parseColor(note.getColor()));
+        if (note.getColor().compareTo("#null") != 0) {
+            llContainer.setBackgroundColor(Color.parseColor(note.getColor()));
+        }
     }
 }

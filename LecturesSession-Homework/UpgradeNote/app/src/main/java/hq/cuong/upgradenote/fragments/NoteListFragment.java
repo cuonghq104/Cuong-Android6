@@ -2,6 +2,7 @@ package hq.cuong.upgradenote.fragments;
 
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -48,7 +49,7 @@ public class NoteListFragment extends Fragment {
     RecyclerView rvNoteList;
 
     @BindView(R.id.bt_add_note)
-    Button btAddNote;
+    FloatingActionButton btAddNote;
 
     private NoteAdapter noteAdapter;
 

@@ -95,7 +95,7 @@ public class LoginAndRegisterFragment extends Fragment {
         register.enqueue(new Callback<RegisterResponseBody>() {
             @Override
             public void onResponse(Call<RegisterResponseBody> call, Response<RegisterResponseBody> response) {
-                if (response.code() != 200) {
+                if (response.code() != 201) {
                     Toast.makeText(getContext(), R.string.user_already_exists, Toast.LENGTH_SHORT).show();
                     return;
                 }

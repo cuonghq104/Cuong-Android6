@@ -8,6 +8,7 @@ import android.os.Bundle;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import hq.cuong.upgradenote.NoteListContainerFragment;
 import hq.cuong.upgradenote.events.ChangeFragmentEvent;
 import hq.cuong.upgradenote.fragments.LoginAndRegisterFragment;
 import hq.cuong.upgradenote.fragments.NewNoteFragment;
@@ -24,9 +25,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         EventBus.getDefault().register(this);
         if (Preferences.getInstance().getToken() == null) {
-            changeFragment(new LoginAndRegisterFragment(), false);
+            changeFragment(new LoginAndRegisterFragment(), true);
         } else {
-            changeFragment(new NoteListFragment(), false);
+            changeFragment(new NoteListContainerFragment(), true);
         }
     }
 
